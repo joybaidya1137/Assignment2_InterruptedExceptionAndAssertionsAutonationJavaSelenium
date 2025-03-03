@@ -1,10 +1,13 @@
 package org.example;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.List;
 
 public class Interaction_in_Selenium {
 
@@ -85,34 +88,147 @@ public class Interaction_in_Selenium {
         Thread.sleep(2000);
     }
 
-    static void interactWithLinks(){
+    static void interactWithLinks() throws InterruptedException {
     System.out.println("Welcome to the interactWithLinks.");
     driver.get("https://the-internet.herokuapp.com/");
-
+        Thread.sleep(2000);
+    WebElement  Links = driver.findElement(By.linkText("Redirect Link"));
+                Links.click();
+        Thread.sleep(2000);
     }
-    static void interactWithImage(){
+
+
+    static void interactWithImage() throws InterruptedException {
     System.out.println("Welcome to the interactWithImage.");
+    driver.get("https://demo.guru99.com/");
+
+        // WebElement Image = driver.findElement(By.xpath("//img[@alt='Guru99 Demo Sites']"));
+        // WebElement Image = driver.findElement(By.xpath("//img[@src='/logo.png']"));
+        try {
+            WebElement Image = driver.findElement(By.xpath("//img[@role='presentation']"));
+            Thread.sleep(2000);
+            String imageUrl = Image.getAttribute("src");
+            System.out.println("Image source: " + imageUrl);
+
+            // Click the image (if clickable)
+            Image.click();
+            // Pause for demonstration
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+
+        }
 
 
     }
 
     static void interactWithTables(){
     System.out.println("Welcome to the interactWithTables.");
-
+        driver.get("https://the-internet.herokuapp.com/tables");
+        WebElement Tables = driver.findElement(By.id("table1"));
+        List<WebElement> rows = Tables.findElements(By.tagName("tr"));
+        for (WebElement Row : rows) {
+            List<WebElement> cols = Row.findElements(By.tagName("td"));
+            for (WebElement col : cols) {
+                System.out.print(col.getText() + "\t");
+            }
+            System.out.println();
+        }
 
     }
 
-    static void interactWithFrames(){
+
+   //don't clear Understands
+    static void interactWithFrames() throws InterruptedException {
     System.out.println("Welcome to the interactWithFrames.");
-
-
+        driver.get("https://the-internet.herokuapp.com/iframe");
+        Thread.sleep(2000);
+        driver.switchTo().frame("mce_0_ifr");
+        Thread.sleep(2000);
+        WebElement editor = driver.findElement(By.id("tinymce"));
+        editor.clear();
+        Thread.sleep(2000);
+        editor.sendKeys("Hello, Frame!");
+        Thread.sleep(2000);
+        driver.switchTo().defaultContent();
+        Thread.sleep(2000);
+        WebElement title = driver.findElement(By.xpath("//h3"));
+        Thread.sleep(2000);
+        System.out.println(title.getText());
     }
 
-    static void interactWithAlerts(){
+    static void interactWithAlerts() throws InterruptedException {
     System.out.println("Welcome to the interactWithAlerts.");
+    driver.get("https://the-internet.herokuapp.com/javascript_alerts");
+
+
+      //fast Alerts
+       /* WebElement alertButton = driver.findElement(By.xpath("//button[text()='Click for JS Alert']"));
+        alertButton.click();
+
+        Alert alert = driver.switchTo().alert();
+        Thread.sleep(200);
+        System.out.println(alert.getText());
+        Thread.sleep(200);
+        alert.accept();
+        //alert.dismiss();
+        Thread.sleep(200);
+
+        / Verify the result text
+        WebElement result = driver.findElement(By.id("result"));
+        System.out.println("Result message: " + result.getText());
+        //alert.accept();
+        //alert.dismiss();
+      */
+
+
+
+        //2nd Alerts
+      /* WebElement confirm = driver.findElement(By.xpath("//button[text()='Click for JS Confirm']"));
+         confirm.click();
+
+        Alert alert = driver.switchTo().alert();
+        Thread.sleep(2000);
+        System.out.println(alert.getText());
+        Thread.sleep(2000);
+        alert.accept();
+        //alert.dismiss();
+        Thread.sleep(2000);
+
+        // Verify the result text
+        WebElement result = driver.findElement(By.id("result"));
+        System.out.println("Result message: " + result.getText());
+        //alert.accept();
+        //alert.dismiss();
+    */
+
+
+
+        //3rd Alerts test send need
+        WebElement prompt = driver.findElement(By.xpath("//button[text()='Click for JS Prompt']"));
+         prompt.click();
+
+        Alert alert = driver.switchTo().alert();
+        Thread.sleep(2000);
+        System.out.println(alert.getText());
+        Thread.sleep(2000);
+        alert.sendKeys("my name is joy");
+
+        alert.accept();
+        //alert.dismiss();
+        Thread.sleep(2000);
+
+        // Verify the result text
+        WebElement result = driver.findElement(By.id("result"));
+        System.out.println("Result message: " + result.getText());
+
+        //alert.accept();
+        //alert.dismiss();
 
 
     }
+
+
 
 
 
@@ -211,11 +327,11 @@ public static void main(String[] args) throws InterruptedException {
           //interactWithRadioButtons();
           //interactWithCheckBox();
           //interactWithDropDown();
-          interactWithLinks();
-          //interactWithImage();
-          //interactWithTables();
-          //interactWithFrames();
-          //interactWithAlerts();
+          //interactWithLinks();
+          // interactWithImage();
+          // interactWithTables();
+          // interactWithFrames();
+          interactWithAlerts();
           //interactWithWindowsAndTabs();
           //interactWithHiddenElements();
 
