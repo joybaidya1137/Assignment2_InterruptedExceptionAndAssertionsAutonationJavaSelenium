@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
+import java.util.Set;
 
 public class Interaction_in_Selenium {
 
@@ -225,18 +226,63 @@ public class Interaction_in_Selenium {
         //alert.accept();
         //alert.dismiss();
 
-
     }
 
 
 
-
-
-    static void interactWithWindowsAndTabs(){
+/*
+1️⃣ মূল পৃষ্ঠায় যাবে।
+2️⃣ প্রথম "Click Here" ক্লিক করলে প্রথম নতুন উইন্ডো খুলবে।
+3️⃣ প্রথম নতুন উইন্ডোতে সুইচ করবে।
+4️⃣ ওই নতুন উইন্ডো থেকে আবার "Click Here" ক্লিক করলে দ্বিতীয় নতুন উইন্ডো খুলবে।
+*/
+   static void interactWithWindowsAndTabs() throws InterruptedException {
     System.out.println("Welcome to the interactWithWindowsAndTabs.");
 
+        driver.get("https://the-internet.herokuapp.com/windows");
+
+       /* String parentWindow = driver.getWindowHandle(); // মূল উইন্ডোর হ্যান্ডল সংগ্রহ
+        driver.findElement(By.linkText("Click Here")).click();
+
+            Thread.sleep(2000);
+
+        Set<String> handles = driver.getWindowHandles();
+        for (String window : handles) {
+            driver.switchTo().window(window);
+            break;
+        }
+
+        driver.findElement(By.linkText("Click Here")).click();
+
+            Thread.sleep(2000);
+*/
+
+
+       String parentWindow = driver.getWindowHandle(); // Store main window handle
+       driver.findElement(By.linkText("Click Here")).click(); // Open new tab
+
+       Thread.sleep(2000);
+
+       // Get all window handles
+       Set<String> handles = driver.getWindowHandles();
+       for (String window : handles) {
+           if (!window.equals(parentWindow)) {
+               driver.switchTo().window(window);
+               System.out.println("Switched to new window: " + driver.getTitle());
+               driver.findElement(By.tagName("body")).getText(); // Example interaction
+               Thread.sleep(2000);
+               driver.close(); // Close the new window
+           }
+       }
+       // Switch back to parent window
+       Thread.sleep(2000);
+       driver.switchTo().window(parentWindow);
+       System.out.println("Back to parent window: " + driver.getTitle());
 
     }
+
+
+
 
     static void interactWithHiddenElements(){
     System.out.println("Welcome to the interactWithHiddenElements.");
@@ -331,9 +377,9 @@ public static void main(String[] args) throws InterruptedException {
           // interactWithImage();
           // interactWithTables();
           // interactWithFrames();
-          interactWithAlerts();
+          // interactWithAlerts();
           //interactWithWindowsAndTabs();
-          //interactWithHiddenElements();
+          interactWithHiddenElements();
 
           //hoverOverElement();
           //dragAndDrop();
