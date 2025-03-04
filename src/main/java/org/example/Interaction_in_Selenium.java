@@ -1,12 +1,14 @@
 package org.example;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.w3c.dom.Text;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
@@ -288,21 +290,109 @@ public class Interaction_in_Selenium {
     System.out.println("Welcome to the interactWithHiddenElements.");
 
 
+
     }
 
-    static void hoverOverElement(){
+    static void hoverOverElement() throws InterruptedException {
     System.out.println("Welcome to the hoverOverElement.");
+    driver.get("https://the-internet.herokuapp.com/hovers");
 
+        Actions actions = new Actions(driver);
+
+        Thread.sleep(2000);
+        WebElement avatar1 = driver.findElement(By.xpath("(//img[@alt='User Avatar'])[1]"));
+        actions.moveToElement(avatar1).perform();
+        Thread.sleep(2000);
+
+        Thread.sleep(2000);
+        WebElement avatar2 = driver.findElement(By.xpath("(//img[@alt='User Avatar'])[2]"));
+        actions.moveToElement(avatar2).perform();
+
+        Thread.sleep(2000);
+        WebElement avatar3 = driver.findElement(By.xpath("(//img[@alt='User Avatar'])[3]"));
+        actions.moveToElement(avatar3).perform();
+        Thread.sleep(2000);
+
+
+        Thread.sleep(2000);
+        WebElement avatar = driver.findElement(By.xpath("(//img[@alt='User Avatar'])[1]"));
+        actions.moveToElement(avatar).perform();
+        Thread.sleep(2000);
+
+        WebElement viewProfile = driver.findElement(By.linkText("View profile"));
+        viewProfile.click();
+        Thread.sleep(2000);
+        WebElement TextPrint = driver.findElement(By.xpath("/html/body/h1"));
+        TextPrint.click();
+        Thread.sleep(2000);
 
     }
 
-    static void dragAndDrop(){
+    static void dragAndDrop() throws InterruptedException {
     System.out.println("Welcome to the dragAndDrop.");
+    driver.get("https://the-internet.herokuapp.com/drag_and_drop");
+        WebElement source = driver.findElement(By.id("column-a"));
+        WebElement target = driver.findElement(By.id("column-b"));
+            Thread.sleep(2000);
+
+            new Actions(driver).dragAndDrop(source, target).perform();
+            Thread.sleep(2000);
+
+            new Actions(driver).dragAndDrop(source, target).perform();
+            Thread.sleep(2000);
+
 
 
     }
-    static void scrollPage(){
+    static void scrollPage() throws InterruptedException {
     System.out.println("Welcome to the scrollPage.");
+
+        // Open a sample website
+        driver.get("https://www.selenium.dev/documentation/en/");
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+            Thread.sleep(2000);
+
+        // Scroll down by 500 pixels
+        js.executeScript("window.scrollBy(0,500);");
+            Thread.sleep(2000);
+
+        // Scroll up by 500 pixels
+        js.executeScript("window.scrollBy(0,-500);");
+            Thread.sleep(2000);
+
+
+        // Scroll to bottom of the page
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+            Thread.sleep(2000);
+
+
+        // Scroll back to top
+        js.executeScript("window.scrollTo(0, 0);");
+            Thread.sleep(2000);
+
+
+        // Find the element to scroll to
+        WebElement element = driver.findElement(By.linkText("Selenium Overview"));
+
+
+        // Scroll to the element
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        Thread.sleep(3000);
+        // Highlight the element (for visibility)
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.border='3px solid red'", element);
+            Thread.sleep(5000);
+
+
+        // Find the element to scroll to
+        WebElement element1 = driver.findElement(By.xpath("//a[text()='About this documentation']"));
+        Thread.sleep(3000);
+        // Scroll to the element
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element1);
+        Thread.sleep(3000);
+        // Highlight the element (for visibility)
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.border='2px solid red'", element1);
+        Thread.sleep(5000);
 
 
     }
@@ -314,16 +404,53 @@ public class Interaction_in_Selenium {
     }
 
 
-    static void doubleClick(){
+    static void doubleClick() throws InterruptedException {
     System.out.println("Welcome to the doubleClick.");
 
+        driver.get("https://www.selenium.dev/documentation/en/");
+/*
+        // Use WebDriverWait to wait until the input field is enabled
+        // Use WebDriverWait to wait until the input field is enabled
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebElement inputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='The Selenium Browser Automation Project']")));
+*/
+        Actions actions = new Actions(driver);
+        WebElement element = driver.findElement(By.xpath("//h1[text()='The Selenium Browser Automation Project']"));
+        actions.doubleClick(element).perform();
+
+        System.out.println("doubleClicked at :" + element.getText());
+
+            Thread.sleep(5000);
+
+
 
     }
-    static void rightClick(){
+    static void rightClick() throws InterruptedException {
     System.out.println("Welcome to the rightClick.");
 
+        driver.get("https://www.selenium.dev/documentation/en/");
+
+        // Use WebDriverWait to wait until the input field is enabled
+        // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        // WebElement inputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='The Selenium Browser Automation Project']")));
+
+       /* Actions actions = new Actions(driver);
+        //WebElement element = driver.findElement(By.xpath("//h1[text()='The Selenium Browser Automation Project']"));
+        actions.contextClick(element).perform();
+         System.out.println("rightClicked at :" + element.getText());
+         Thread.sleep(5000);
+        */
+
+
+        Actions actions = new Actions(driver);
+        WebElement element = driver.findElement(By.className("td-sidebar-nav-active-item"));
+        actions.contextClick(element).perform();
+        System.out.println("rightClicked at :" + element.getText());
+        Thread.sleep(5000);
 
     }
+
+
     static void handleSpecialKeys(){
     System.out.println("Welcome to the handleSpecialKeys.");
 
@@ -379,15 +506,15 @@ public static void main(String[] args) throws InterruptedException {
           // interactWithFrames();
           // interactWithAlerts();
           //interactWithWindowsAndTabs();
-          interactWithHiddenElements();
+          //interactWithHiddenElements();
 
-          //hoverOverElement();
-          //dragAndDrop();
-          //scrollPage();
+          // hoverOverElement();
+          // dragAndDrop();
+          // scrollPage();
           //JavaScriptClick();
           //doubleClick();
           //rightClick();
-          //handleSpecialKeys();
+          handleSpecialKeys();
           //uploadFile();
           //fatchingCssProperties();
           //gettingSizeAndPosition();
