@@ -1,5 +1,6 @@
 package org.example;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -8,9 +9,13 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
+
+
 
 public class Interaction_in_Selenium {
 
@@ -451,40 +456,121 @@ public class Interaction_in_Selenium {
     }
 
 
-    static void handleSpecialKeys(){
+    static void handleSpecialKeys() throws InterruptedException {
     System.out.println("Welcome to the handleSpecialKeys.");
+        driver.get("https://the-internet.herokuapp.com/key_presses");
+        WebElement inputField = driver.findElement(By.id("target"));
+        inputField.sendKeys("I am joy baidya");
+        inputField.sendKeys(Keys.CONTROL + "a");
+        Thread.sleep(2000);
+        inputField.sendKeys(Keys.CONTROL + "x");
+        Thread.sleep(3000);
+        inputField.sendKeys(Keys.CONTROL + "v");
+        Thread.sleep(2000);
+        inputField.sendKeys(Keys.CONTROL + "z");
 
+            Thread.sleep(2000);
+        inputField.sendKeys(Keys.ENTER);
+        Thread.sleep(2000);
 
     }
 
-    static void uploadFile(){
+    static void uploadFile() throws InterruptedException {
     System.out.println("Welcome to the uploadFile.");
+        driver.get("https://the-internet.herokuapp.com/upload");
+        WebElement ChooseFile = driver.findElement(By.id("file-upload"));
+            Thread.sleep(1000);
+        ChooseFile.sendKeys("C:\\Users\\User\\Downloads\\Joy Baidya(CV).pdf");
+            Thread.sleep(5000);
+            WebElement Upload = driver.findElement(By.id("file-submit"));Upload.click();
+            Thread.sleep(5000);
 
-
+        WebElement uploadedFile = driver.findElement(By.id("uploaded-files"));
+        System.out.println("Uploaded File Name: " + uploadedFile.getText());
     }
+
+
+
 
     static void fatchingCssProperties(){
     System.out.println("Welcome to the fatchingCssProperties.");
+        driver.get("https://www.selenium.dev/documentation/en/");
 
+        // Locate the element
+        WebElement element = driver.findElement(By.xpath("//h1[text()='The Selenium Browser Automation Project']"));
+
+        // Fetch and print CSS properties
+        String color = element.getCssValue("color");
+        String fontSize = element.getCssValue("font-size");
+
+        System.out.println("Color: " + color);
+        System.out.println("Font Size: " + fontSize);
 
     }
+
     static void gettingSizeAndPosition(){
     System.out.println("Welcome to the gettingSizeAndPosition.");
 
 
+        // 1.Locate the element Text
+            //driver.get("https://www.selenium.dev/documentation/en/");
+            // WebElement element = driver.findElement(By.xpath("//h1[text()='The Selenium Browser Automation Project']"));
+
+        // 2.Locate the element image
+             driver.get("https://www.selenium.dev/documentation/");
+              WebElement element = driver.findElement(By.xpath("//img[@alt='BrowserStack']"));
+
+
+
+
+        // Fetch and print size
+        Dimension size = element.getSize();
+        System.out.println("Width: " + size.getWidth() + ", Height: " + size.getHeight());
+
+        // Fetch and print position
+        Point position = element.getLocation();
+        System.out.println("X Position: " + position.getX() + ", Y Position: " + position.getY());
+
     }
-    static void handingDynamicElements(){
+
+
+    static void handingDynamicElements() throws InterruptedException {
     System.out.println("Welcome to the handingDynamicElements.");
+        driver.get("https://www.google.com/");
 
+        // Using explicit wait to handle dynamic elements
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement dynamicElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div[1]/div[2]/textarea")));
+
+        dynamicElement.sendKeys("bangladesh");
+        Thread.sleep(2000);
+        dynamicElement.click();
+        System.out.println("Dynamic element clicked successfully.");
 
     }
+
+
+    
+
+    // Not clear this Screenshort process
     static void captureScreenshot(){
     System.out.println("Welcome to the captureScreenshot.");
 
+        System.out.println("captureScreenshot");
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        // Define destination file path
+        File destination = new File("T1071.png");
 
+        // Save the screenshot
+        try {
+            FileUtils.copyFile(screenshot, destination);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Screenshot captured at: " + screenshot.getAbsolutePath());
     }
-
-
 
 public static void main(String[] args) throws InterruptedException {
 
@@ -514,12 +600,12 @@ public static void main(String[] args) throws InterruptedException {
           //JavaScriptClick();
           //doubleClick();
           //rightClick();
-          handleSpecialKeys();
-          //uploadFile();
+          //handleSpecialKeys();
+         // uploadFile();
           //fatchingCssProperties();
-          //gettingSizeAndPosition();
+         // gettingSizeAndPosition();
           //handingDynamicElements();
-          //captureScreenshot();
+          captureScreenshot();
          System.out.println("The Code Run completed");
 
      } catch (Exception e) {
